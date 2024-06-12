@@ -5,7 +5,6 @@ namespace App\Http\Requests\Api\v1\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use App\Classes\ApiResponseHelper;
 
 
 class StoreAuthRequest extends FormRequest
