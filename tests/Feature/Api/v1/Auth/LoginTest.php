@@ -93,15 +93,6 @@ class LoginTest extends TestCase
                 'errors' => ['email']
             ]
         );
-        // $response->assertJsonFragment(
-        //     [
-        //         'status' => 422,
-        //         'message' => 'The email field must be a valid email address.',
-        //         'errors' => [
-        //             'email' => ['The email field must be a valid email address.']
-        //         ]
-        //     ]
-        // );
     }
 
     #[Test]
