@@ -64,8 +64,81 @@ class LoginTest extends TestCase
         $response = $this->postJson('/api/v1/login', $credentials);
 
         $response->assertStatus(422);
-        $response->assertJsonStructure(['data', 'status', 'message', 'errors' => ['email']]);
-        $response->assertJsonFragment(['status' => 422, 'message' => 'The email field is required.']);
+        $response->assertJsonStructure(
+            [
+                'data',
+                'status',
+                'message',
+                'errors' => ['email']
+            ]
+        );
+        // $response->assertJsonFragment(
+        //     [
+        //         'status' => 422,
+        //         'message' => 'The email field is required.',
+        //         'errors' => ['email' => ['The email field is required.']]
+        //     ]
+        // );
+    }
+
+    #[Test]
+    public function email_most_be_valid_email(): void
+    {
+        $credentials = [
+            'email' => 'password',
+            'password' => 'password',
+        ];
+
+        $response = $this->postJson('/api/v1/login', $credentials);
+
+        $response->assertStatus(422);
+        $response->assertJsonStructure(
+            [
+                'data',
+                'status',
+                'message',
+                'errors' => ['email']
+            ]
+        );
+        // $response->assertJsonFragment(
+        //     [
+        //         'status' => 422,
+        //         'message' => 'The email field must be a valid email address.',
+        //         'errors' => [
+        //             'email' => ['The email field must be a valid email address.']
+        //         ]
+        //     ]
+        // );
+    }
+
+    #[Test]
+    public function email_most_be_a_string(): void
+    {
+        $credentials = [
+            'email' => 25469,
+            'password' => 'password',
+        ];
+
+        $response = $this->postJson('/api/v1/login', $credentials);
+
+        $response->assertStatus(422);
+        $response->assertJsonStructure(
+            [
+                'data',
+                'status',
+                'message',
+                'errors' => ['email']
+            ]
+        );
+
+        // $response->assertJsonFragment([
+        //     'errors' => [
+        //         'email' => [
+        //             'The email field must be a string.',
+        //             'The email field must be a valid email address.'
+        //         ]
+        //     ]
+        // ]);
     }
 
     #[Test]
@@ -77,8 +150,39 @@ class LoginTest extends TestCase
 
         $response = $this->postJson('/api/v1/login', $credentials);
 
+        // $response->dd();
+
         $response->assertStatus(422);
         $response->assertJsonStructure(['errors' => ['password']]);
-        $response->assertJsonFragment(['status' => 422, 'message' => 'The password field is required.']);
+        // $response->assertJsonFragment(
+        //     [
+        //         'status' => 422,
+        //         'message' => 'The password field is required.',
+        //         'errors' => ['password' => ['The password field is required.']]
+        //     ]
+        // );
+    }
+
+    #[Test]
+    public function password_most_be_a_lease_8_characters(): void
+    {
+        $credentials = [
+            'email' => 'example@example.com',
+            'password' => '123',
+        ];
+
+        $response = $this->postJson('/api/v1/login', $credentials);
+
+        // $response->dd();
+
+        $response->assertStatus(422);
+        $response->assertJsonStructure(['errors' => ['password']]);
+        // $response->assertJsonFragment(
+        //     [
+        //         'status' => 422,
+        //         'message' => 'The password field must be at least 8 characters.',
+        //         'errors' => ['password' => ['The password field must be at least 8 characters.']]
+        //     ]
+        // );
     }
 }

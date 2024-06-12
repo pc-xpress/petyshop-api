@@ -20,7 +20,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->render(function (ValidationException $throwable) {
             return ApiResponseHelper::sendResponse(
                 [],
-                $throwable->getMessage(),
+                false,
+                'Validation errors.',
                 $throwable->errors(),
                 422,
             );

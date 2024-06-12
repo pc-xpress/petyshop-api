@@ -23,7 +23,7 @@ class ApiResponseHelper
         ], 500));
     }
 
-    public static function sendResponse($result, $message = '', $errors = [], $code = 200)
+    public static function sendResponse($result, $success = true, $message = '', $errors = [], $code = 200)
     {
         if ($code === 204) {
             return response()->noContent();
@@ -31,10 +31,11 @@ class ApiResponseHelper
 
 
         $response = [
-            'data' => $result,
-            'success' => true,
+            'success' => $success,
             'status' => $code,
             'errors' => $errors,
+            'message' => $message,
+            'data' => $result,
         ];
 
         if (!empty($message)) {

@@ -2,25 +2,22 @@
 
 namespace App\Http\Controllers\Api\v1\Auth;
 
+use Illuminate\Http\Request;
 use App\Classes\ApiResponseHelper;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\Api\v1\Auth\StoreAuthRequest;
 
 class AuthController extends Controller
 {
-    public function login(Request $request)
+    public function login(StoreAuthRequest $request)
     {
-        $request->validate([
-            'email' => 'required|string|email',
-            'password' => 'required|min:8',
-        ]);
         $credentials = request(['email', 'password']);
 
         if (!$token = auth()->attempt($credentials)) {
-            return ApiResponseHelper::sendResponse([], 'Unauthorized', [], 401);
+            return ApiResponseHelper::sendResponse([], false, 'Unauthorized', [], 401);
         }
 
 
-        return ApiResponseHelper::sendResponse(['token' => $token, 'expires_in' => auth()->factory()->getTTL() * 60], 'OK', [], 200);
+        return ApiResponseHelper::sendResponse(['token' => $token, 'expires_in' => auth()->factory()->getTTL() * 60], true, 'OK', [], 200);
     }
 }
