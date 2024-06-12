@@ -72,13 +72,6 @@ class LoginTest extends TestCase
                 'errors' => ['email']
             ]
         );
-        // $response->assertJsonFragment(
-        //     [
-        //         'status' => 422,
-        //         'message' => 'The email field is required.',
-        //         'errors' => ['email' => ['The email field is required.']]
-        //     ]
-        // );
     }
 
     #[Test]
