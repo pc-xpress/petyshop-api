@@ -24,15 +24,36 @@ class UserRegisterTest extends TestCase
 
         $response = $this->postJson("{$this->apiV1Base}/users", $data);
 
-
         $response->assertStatus(200);
         $this->assertDatabaseCount('users', 1);
-        // dd(User::all());
-        $user = User::find(1);
-        // dd($user);
+        $response->assertJsonStructure(['status', 'success', 'errors', 'message', 'data' => [
+            'user' =>
+            [
+                'id',
+                'email',
+                'name',
+                'last_name'
+            ]
+        ]]);
+
+        $response->assertJsonFragment([
+            'success' => true,
+            'status' => 200,
+            'errors' => [],
+            'message' => 'OK',
+            'data' => [
+                'user' => [
+                    'id' => 1,
+                    'email' => 'email@email.com',
+                    'name' => 'example',
+                    'last_name' => 'example example',
+                ],
+
+            ]
+        ]);
+
         $this->assertDatabaseHas('users', [
             'email' => 'email@email.com',
-            'password' => $user->password,
             'name' => 'example',
             'last_name' => 'example example',
         ]);
@@ -225,7 +246,7 @@ class UserRegisterTest extends TestCase
             'last_name' => '',
         ];
 
-        $response = $this->postJson('/api/v1/users', $data);
+        $response = $this->postJson("{$this->apiV1Base}/users", $data);
 
         $response->assertStatus(422);
         $response->assertJsonStructure(['errors' => ['last_name']]);
@@ -241,7 +262,7 @@ class UserRegisterTest extends TestCase
             'last_name' => '1',
         ];
 
-        $response = $this->postJson('/api/v1/users', $data);
+        $response = $this->postJson("{$this->apiV1Base}/users", $data);
 
         $response->assertStatus(422);
         $response->assertJsonStructure(['errors' => ['last_name']]);
