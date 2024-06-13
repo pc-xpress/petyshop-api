@@ -29,7 +29,7 @@ class LoginTest extends TestCase
             'password' => 'password',
         ];
 
-        $response = $this->postJson('/api/v1/login', $credentials);
+        $response = $this->postJson("{$this->apiV1Base}/login", $credentials);
         // $response->dd();
         // dump($response);
         // dd($response);
@@ -47,7 +47,7 @@ class LoginTest extends TestCase
             'password' => 'password',
         ];
 
-        $response = $this->postJson('/api/v1/login', $credentials);
+        $response = $this->postJson("{$this->apiV1Base}/login", $credentials);
 
         $response->assertStatus(401);
         $response->assertJsonStructure(['message']);
@@ -61,7 +61,7 @@ class LoginTest extends TestCase
             'password' => 'password',
         ];
 
-        $response = $this->postJson('/api/v1/login', $credentials);
+        $response = $this->postJson("{$this->apiV1Base}/login", $credentials);
 
         $response->assertStatus(422);
         $response->assertJsonStructure(
@@ -82,7 +82,7 @@ class LoginTest extends TestCase
             'password' => 'password',
         ];
 
-        $response = $this->postJson('/api/v1/login', $credentials);
+        $response = $this->postJson("{$this->apiV1Base}/login", $credentials);
 
         $response->assertStatus(422);
         $response->assertJsonStructure(
@@ -103,7 +103,7 @@ class LoginTest extends TestCase
             'password' => 'password',
         ];
 
-        $response = $this->postJson('/api/v1/login', $credentials);
+        $response = $this->postJson("{$this->apiV1Base}/login", $credentials);
 
         $response->assertStatus(422);
         $response->assertJsonStructure(
@@ -132,7 +132,7 @@ class LoginTest extends TestCase
             'email' => 'example@notexisting.com',
         ];
 
-        $response = $this->postJson('/api/v1/login', $credentials);
+        $response = $this->postJson("{$this->apiV1Base}/login", $credentials);
 
 
         $response->assertStatus(422);
@@ -154,7 +154,7 @@ class LoginTest extends TestCase
             'password' => '123',
         ];
 
-        $response = $this->postJson('/api/v1/login', $credentials);
+        $response = $this->postJson("{$this->apiV1Base}/login", $credentials);
 
         // $response->dd();
 

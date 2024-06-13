@@ -26,7 +26,7 @@ class RegisterController extends Controller
     {
         $user = User::create($request->all());
 
-        ApiResponseHelper::sendResponse(['user' => AuthResource::make($user)], true, 'OK', [], 200);
+        return ApiResponseHelper::sendResponse(['user' => AuthResource::make($user)], true, 'OK', [], 200);
 
         // return jsonResponse(data: ['user' => AuthResource::make($user)]);
     }
