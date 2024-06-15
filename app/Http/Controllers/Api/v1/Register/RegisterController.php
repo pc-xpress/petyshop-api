@@ -11,17 +11,7 @@ use App\Http\Resources\Api\v1\Auth\AuthResource;
 
 class RegisterController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(CreateUserRequest $request)
     {
         $user = User::create($request->all());
@@ -29,29 +19,5 @@ class RegisterController extends Controller
         return ApiResponseHelper::sendResponse(['user' => AuthResource::make($user)], true, 'OK', [], 200);
 
         // return jsonResponse(data: ['user' => AuthResource::make($user)]);
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(user $user)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, user $user)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(user $user)
-    {
-        //
     }
 }
