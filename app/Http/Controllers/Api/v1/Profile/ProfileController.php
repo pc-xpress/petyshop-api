@@ -6,11 +6,10 @@ use App\Classes\ApiResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\v1\User\UpdateUserRequest;
 use App\Http\Resources\Api\v1\Auth\AuthResource;
-use App\Models\User;
 
 class ProfileController extends Controller
 {
-    public function Update(UpdateUserRequest $request, User $user)
+    public function Update(UpdateUserRequest $request)
     {
         auth()->user()->update($request->validated());
         $user = AuthResource::make(auth()->user()->fresh());
