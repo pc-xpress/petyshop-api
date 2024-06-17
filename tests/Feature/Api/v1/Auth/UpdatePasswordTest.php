@@ -37,4 +37,19 @@ class UpdatePasswordTest extends TestCase
         $user = User::find(1);
         $this->assertTrue(Hash::check('newpassword', $user->password));
     }
+
+    #[Test]
+    public function old_password_most_be_required(): void
+    {
+        $data = [
+            'old_password' => '',
+            'password' => 'newpassword',
+            'password_confirmation' => 'newpassword',
+        ];
+
+        $response = $this->apiAs(User::find(1), 'PUT', "{$this->apiV1Base}/password", $data);
+
+        $response->assertStatus(422);
+        $response->assertJsonStructure(['status', 'success', 'message', 'errors' => ['old_password']]);
+    }
 }
