@@ -52,4 +52,19 @@ class UpdatePasswordTest extends TestCase
         $response->assertStatus(422);
         $response->assertJsonStructure(['status', 'success', 'message', 'errors' => ['old_password']]);
     }
+
+    #[Test]
+    public function password_most_be_required(): void
+    {
+        $data = [
+            'old_password' => 'password',
+            'password' => '',
+            'password_confirmation' => 'newpassword',
+        ];
+
+        $response = $this->apiAs(User::find(1), 'PUT', "{$this->apiV1Base}/password", $data);
+
+        $response->assertStatus(422);
+        $response->assertJsonStructure(['status', 'success', 'message', 'errors' => ['password']]);
+    }
 }
