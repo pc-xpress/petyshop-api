@@ -67,4 +67,20 @@ class UpdatePasswordTest extends TestCase
         $response->assertStatus(422);
         $response->assertJsonStructure(['status', 'success', 'message', 'errors' => ['password']]);
     }
+
+    #[Test]
+    public function password_most_be_confirmed(): void
+    {
+        $data = [
+            'old_password' => 'password',
+            'password' => 'newpassword',
+            'password_confirmation' => '',
+        ];
+
+        $response = $this->apiAs(User::find(1), 'PUT', "{$this->apiV1Base}/password", $data);
+
+        $response->assertStatus(422);
+        $response->assertJsonStructure(['status', 'success', 'message', 'errors' => ['password']]);
+        $response->assertJsonFragment(['errors' => ['password' => ['The password field confirmation does not match.']]]);
+    }
 }
