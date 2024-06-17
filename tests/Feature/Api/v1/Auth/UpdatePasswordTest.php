@@ -22,16 +22,14 @@ class UpdatePasswordTest extends TestCase
     #[Test]
     public function an_authenticated_user_can_update_their_password(): void
     {
-        // $this->withoutExceptionHandling();
         $data = [
-            'old_password' => 'password',
+            'current_password' => 'password',
             'password' => 'newpassword',
             'password_confirmation' => 'newpassword',
         ];
 
         $response = $this->apiAs(User::find(1), 'PUT', "{$this->apiV1Base}/password", $data);
 
-        // $response->dd();
         $response->assertStatus(200);
 
         $user = User::find(1);
@@ -39,10 +37,10 @@ class UpdatePasswordTest extends TestCase
     }
 
     #[Test]
-    public function old_password_most_be_required(): void
+    public function old_password_most_be_validated(): void
     {
         $data = [
-            'old_password' => '',
+            'current_password' => 'wrongpassword',
             'password' => 'newpassword',
             'password_confirmation' => 'newpassword',
         ];
@@ -50,14 +48,31 @@ class UpdatePasswordTest extends TestCase
         $response = $this->apiAs(User::find(1), 'PUT', "{$this->apiV1Base}/password", $data);
 
         $response->assertStatus(422);
-        $response->assertJsonStructure(['status', 'success', 'message', 'errors' => ['old_password']]);
+
+        $response->assertJsonStructure(['status', 'success', 'message', 'errors' => ['current_password']]);
+        $response->assertJsonFragment(['errors' => ['current_password' => ['The password does not match.']]]);
+    }
+
+    #[Test]
+    public function old_password_most_be_required(): void
+    {
+        $data = [
+            'current_password' => '',
+            'password' => 'newpassword',
+            'password_confirmation' => 'newpassword',
+        ];
+
+        $response = $this->apiAs(User::find(1), 'PUT', "{$this->apiV1Base}/password", $data);
+
+        $response->assertStatus(422);
+        $response->assertJsonStructure(['status', 'success', 'message', 'errors' => ['current_password']]);
     }
 
     #[Test]
     public function password_most_be_required(): void
     {
         $data = [
-            'old_password' => 'password',
+            'current_password' => 'password',
             'password' => '',
             'password_confirmation' => 'newpassword',
         ];
@@ -72,7 +87,7 @@ class UpdatePasswordTest extends TestCase
     public function password_most_be_confirmed(): void
     {
         $data = [
-            'old_password' => 'password',
+            'current_password' => 'password',
             'password' => 'newpassword',
             'password_confirmation' => '',
         ];
