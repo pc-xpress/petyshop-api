@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\v1\Register;
+namespace App\Http\Controllers\Api\v1\Auth;
 
 use App\Classes\ApiResponseHelper;
 use App\Models\user;
@@ -17,7 +17,5 @@ class RegisterController extends Controller
         $user = User::create($request->all());
 
         return ApiResponseHelper::sendResponse(['user' => AuthResource::make($user)], true, 'OK', [], 200);
-
-        // return jsonResponse(data: ['user' => AuthResource::make($user)]);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\v1\Profile;
+namespace App\Http\Controllers\Api\v1\Auth;
 
 use App\Classes\ApiResponseHelper;
 use App\Http\Controllers\Controller;
