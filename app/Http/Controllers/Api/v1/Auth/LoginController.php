@@ -7,7 +7,7 @@ use App\Classes\ApiResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\v1\Auth\StoreAuthRequest;
 
-class AuthController extends Controller
+class LoginController extends Controller
 {
     public function login(StoreAuthRequest $request)
     {
