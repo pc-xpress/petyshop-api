@@ -9,10 +9,23 @@ use App\Http\Resources\Api\v1\Auth\AuthResource;
 
 class ProfileController extends Controller
 {
-    public function Update(UpdateUserRequest $request)
+    /**
+     * Update the authenticated user's profile.
+     *
+     * @param UpdateUserRequest $request The request object containing the user's updated profile data.
+     * @return \Illuminate\Http\JsonResponse The JSON response containing the updated user resource.
+     */
+    public function update(UpdateUserRequest $request)
     {
-        auth()->user()->update($request->validated());
-        $user = AuthResource::make(auth()->user()->fresh());
-        return ApiResponseHelper::sendResponse(['user' => AuthResource::make($user)], true, 'OK', [], 200);
+        $user = auth()->user();
+        $user->update($request->validated());
+
+        return ApiResponseHelper::sendResponse(
+            ['user' => AuthResource::make($user->fresh())],
+            true,
+            'OK',
+            [],
+            200
+        );
     }
 }
