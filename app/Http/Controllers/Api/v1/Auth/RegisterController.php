@@ -12,10 +12,24 @@ use App\Http\Resources\Api\v1\Auth\AuthResource;
 class RegisterController extends Controller
 {
 
+    /**
+     * Store a newly created user in storage.
+     *
+     * @param CreateUserRequest $request The request object containing the user's data.
+     * @return \Illuminate\Http\JsonResponse The JSON response containing the created user resource.
+     */
     public function store(CreateUserRequest $request)
     {
+        // Create a new user with the data from the request.
         $user = User::create($request->all());
 
-        return ApiResponseHelper::sendResponse(['user' => AuthResource::make($user)], true, 'OK', [], 200);
+        // Return a successful response with the created user resource.
+        return ApiResponseHelper::sendResponse(
+            ['user' => AuthResource::make($user)], // The user resource to be returned.
+            true, // The success flag.
+            'OK', // The success message.
+            [], // The additional data.
+            200 // The HTTP status code.
+        );
     }
 }
