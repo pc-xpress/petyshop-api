@@ -11,7 +11,7 @@ use App\Http\Controllers\Api\v1\Auth\UpdatePasswordController;
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
-// })->middleware('auth:sanctum');
+// })->middleware('auth:sanctum');Create route to reset password method
 
 
 Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers'], function () {
@@ -19,8 +19,5 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers'], function
     Route::post('/users', [RegisterController::class, 'store']);
     Route::put('/profile', [ProfileController::class, 'update']);
     Route::put('/password', [UpdatePasswordController::class, 'update']);
-    //Route::post('/login', LoginController::class, 'login');
-    // Route::apiResource('customers', CustomerController::class);
-    // Route::apiResource('pets', PetController::class);
-    // Route::post('pets/bulk', ['uses' => 'PetController@bulkStore']);
+    Route::put('/reset-password', [ResetPasswordController::class, 'update']);
 });
