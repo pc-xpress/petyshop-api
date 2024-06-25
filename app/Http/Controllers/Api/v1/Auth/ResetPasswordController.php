@@ -38,8 +38,8 @@ class ResetPasswordController extends Controller
     {
         $request->validate([
             'token' => 'required',
-            'email' => 'required|email|string|exists:users,email',
-            'password' => 'required|string|confirmed',
+            'email' => 'required|email|string',
+            'password' => 'required|string|min:8|confirmed',
         ]);
 
         $status = Password::reset(
@@ -47,17 +47,17 @@ class ResetPasswordController extends Controller
             function ($user, $password) use ($request) {
                 $user->forceFill([
                     'password' => Hash::make($password)
-                ])->setRememberToken(Str::random(60))->save();
+                ])->setRememberToken(Str::random(60));
+                $user->save();
                 event(new PasswordReset($user));
             }
         );
 
         $message = match ($status) {
-            Password::INVALID_USER => 'Invalid user',
-            Password::INVALID_TOKEN => 'Invalid token',
+            Password::INVALID_USER => 'Invalid email.',
+            Password::INVALID_TOKEN => 'Invalid token.',
             default => 'OK',
         };
-
 
         return ApiResponseHelper::sendResponse(
             [],

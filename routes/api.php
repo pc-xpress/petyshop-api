@@ -20,5 +20,6 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers'], function
     Route::post('/users', [RegisterController::class, 'store']);
     Route::put('/profile', [ProfileController::class, 'update']);
     Route::put('/password', [UpdatePasswordController::class, 'update']);
-    Route::put('/reset-password', [ResetPasswordController::class, 'send']);
+    Route::post('/reset-password', [ResetPasswordController::class, 'send']);
+    Route::put('/reset-password', [ResetPasswordController::class, 'resetPassword']);
 });
