@@ -48,7 +48,9 @@ class ResetPasswordNotification extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            //create the array representation of the notification
+            //create the array representation of the notification 
+
+            //'url' => $this->url
         ];
     }
 }
