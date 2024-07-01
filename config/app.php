@@ -123,4 +123,23 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+|--------------------------------------------------------------------------
+| Frontend Application URL
+|--------------------------------------------------------------------------
+|
+| This environment variable sets the public URL of the frontend application.
+| It is used to generate links and routes within the application.
+|
+| Default value: http://localhost:8000
+|
+| You can adjust this value according to the public URL of your frontend application.
+| For example, if your application is running on a production server,
+| you should set this variable with the corresponding public URL.
+|
+| Supported drivers: None. This variable is only used to set the public URL
+| of the frontend application.
+*/
+    'app_url_front' => env('APP_URL_FRONT', 'http://localhost:8000'),
+
 ];
