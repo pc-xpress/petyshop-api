@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\v1\Auth\ProfileController;
 use App\Http\Controllers\Api\v1\Auth\RegisterController;
 use App\Http\Controllers\Api\v1\Auth\ResetPasswordController;
 use App\Http\Controllers\Api\v1\Auth\UpdatePasswordController;
+use App\Http\Controllers\PetController;
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
@@ -16,10 +17,16 @@ use App\Http\Controllers\Api\v1\Auth\UpdatePasswordController;
 
 
 Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers'], function () {
+    # Auth
     Route::post('/login', [LoginController::class, 'login']);
     Route::post('/users', [RegisterController::class, 'store']);
     Route::put('/profile', [ProfileController::class, 'update']);
     Route::put('/password', [UpdatePasswordController::class, 'update']);
     Route::post('/reset-password', [ResetPasswordController::class, 'send']);
     Route::put('/reset-password', [ResetPasswordController::class, 'resetPassword']);
+    # endAuth
+
+    # Pets
+    Route::apiResource('/pets', PetController::class);
+    #endPets
 });
