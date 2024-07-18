@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Pet;
 use App\Classes\ApiResponseHelper;
+use App\Http\Resources\PetResource;
+use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\StorePetRequest;
 use App\Http\Requests\UpdatePetRequest;
-use App\Http\Resources\PetResource;
 
 class PetController extends Controller
 {
@@ -42,7 +43,11 @@ class PetController extends Controller
      */
     public function update(UpdatePetRequest $request, Pet $pet)
     {
-        //
+        Gate::authorize('update', $pet);
+        $pet->update($request->validated());
+        return ApiResponseHelper::sendResponse(
+            ['pet' => PetResource::make($pet)], // The user resource to be returned.
+        );
     }
 
     /**

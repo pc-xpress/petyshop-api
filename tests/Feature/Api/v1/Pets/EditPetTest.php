@@ -10,12 +10,14 @@ use PHPUnit\Framework\Attributes\Test;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class CreatePetTest extends TestCase
+class EditPetTest extends TestCase
 {
     use RefreshDatabase;
 
+    private Pet $pet;
+
     #[Test]
-    public function a_user_can_create_a_pet(): void
+    public function an_authenticated_user_can_edit_a_pet(): void
     {
         // $this->withoutExceptionHandling();
         $data = [
@@ -27,7 +29,7 @@ class CreatePetTest extends TestCase
             'profile_picture' => 'photo-pet.png',
         ];
 
-        $response = $this->apiAs(User::find(1), 'POST', "{$this->apiV1Base}/pets", $data);
+        $response = $this->apiAs(User::find(1), 'PUT', "{$this->apiV1Base}/pets/{$this->pet->id}", $data);
 
         $response->assertStatus(200);
         $this->assertDatabaseCount('pets', 1);
@@ -48,15 +50,91 @@ class CreatePetTest extends TestCase
         $pet = Pet::first();
         $this->assertStringContainsString('new-pet', $pet->slug);
 
-        $this->assertDatabaseHas('pets', [
+        $this->assertDatabaseMissing('pets', [
             'id' => 1,
             'user_id' => 1,
+            'name'    => 'Pet',
+            'species' => 'Species',
+            'breed' => 'Breed',
+        ]);
+    }
+
+    #[Test]
+    public function a_unauthenticated_user_cannot_edit_a_pet(): void
+    {
+        $data = [
             'name' => 'New Pet',
             'species' => 'New species',
             'breed' => 'New Breed',
             'age' => 2,
             'biography' => 'New Biography',
             'profile_picture' => 'photo-pet.png',
+        ];
+
+        $response = $this->putJson("{$this->apiV1Base}/pets/{$this->pet->id}", $data);
+
+        $response->assertStatus(403);
+    }
+
+    #[Test]
+    public function a_user_only_updates_their_pets(): void
+    {
+        $pet =  Pet::factory()->create();
+
+        $data = [
+            'name' => 'New Pet',
+            'species' => 'New species',
+            'breed' => 'New Breed',
+            'age' => 2,
+            'biography' => 'New Biography',
+            'profile_picture' => 'photo-pet.png',
+        ];
+
+        $response = $this->apiAs(User::find(1), 'PUT', "{$this->apiV1Base}/pets/{$pet->id}", $data);
+
+        $response->assertStatus(403);
+    }
+
+    #[Test]
+    public function the_slug_must_not_be_changed_if_name_is_the_same(): void
+    {
+        // $this->withoutExceptionHandling();
+        $data = [
+            'name' => 'Pet',
+            'species' => 'New species',
+            'breed' => 'New Breed',
+            'age' => 2,
+            'biography' => 'New Biography',
+            'profile_picture' => 'photo-pet.png',
+        ];
+
+        $response = $this->apiAs(User::find(1), 'PUT', "{$this->apiV1Base}/pets/{$this->pet->id}", $data);
+
+        $response->assertStatus(200);
+        $this->assertDatabaseCount('pets', 1);
+        $response->assertJsonStructure(['status', 'success', 'errors', 'message', 'data' => [
+            'pet' =>
+            [
+                'id',
+                'name',
+                'slug',
+                'species',
+                'breed',
+                'age',
+                'biography',
+                'profile_picture',
+            ]
+        ]]);
+
+        $pet = Pet::find(1);
+        $this->assertTrue($pet->slug === $this->pet->slug);
+
+        $this->assertDatabaseMissing('pets', [
+            'id' => 1,
+            'user_id' => 1,
+            'name'    => 'Pet',
+            'species' => 'Species',
+            'breed' => 'Breed',
         ]);
     }
 
@@ -68,7 +146,7 @@ class CreatePetTest extends TestCase
             'species' => 'New species',
         ];
 
-        $response = $this->apiAs(User::find(1), 'POST', "{$this->apiV1Base}/pets", $data);
+        $response = $this->apiAs(User::find(1), 'PUT', "{$this->apiV1Base}/pets/{$this->pet->id}", $data);
 
         $response->assertStatus(422);
         $response->assertJsonStructure(
@@ -89,7 +167,7 @@ class CreatePetTest extends TestCase
             'species' => '',
         ];
 
-        $response = $this->apiAs(User::find(1), 'POST', "{$this->apiV1Base}/pets", $data);
+        $response = $this->apiAs(User::find(1), 'PUT', "{$this->apiV1Base}/pets/{$this->pet->id}", $data);
 
         $response->assertStatus(422);
         $response->assertJsonStructure(
@@ -114,7 +192,7 @@ class CreatePetTest extends TestCase
             'profile_picture' => 'photo-pet.png',
         ];
 
-        $response = $this->apiAs(User::find(1), 'POST', "{$this->apiV1Base}/pets", $data);
+        $response = $this->apiAs(User::find(1), 'PUT', "{$this->apiV1Base}/pets/{$this->pet->id}", $data);
 
         $response->assertStatus(422);
         $response->assertJsonStructure(
@@ -139,7 +217,7 @@ class CreatePetTest extends TestCase
             'profile_picture' => 'photo-pet.png',
         ];
 
-        $response = $this->apiAs(User::find(1), 'POST', "{$this->apiV1Base}/pets", $data);
+        $response = $this->apiAs(User::find(1), 'PUT', "{$this->apiV1Base}/pets/{$this->pet->id}", $data);
 
         $response->assertStatus(422);
         $response->assertJsonStructure(
@@ -164,7 +242,7 @@ class CreatePetTest extends TestCase
             'profile_picture' => 'photo-pet.png',
         ];
 
-        $response = $this->apiAs(User::find(1), 'POST', "{$this->apiV1Base}/pets", $data);
+        $response = $this->apiAs(User::find(1), 'PUT', "{$this->apiV1Base}/pets/{$this->pet->id}", $data);
 
         $response->assertStatus(422);
         $response->assertJsonStructure(
@@ -189,7 +267,7 @@ class CreatePetTest extends TestCase
             'profile_picture' => 'photo-pet.png',
         ];
 
-        $response = $this->apiAs(User::find(1), 'POST', "{$this->apiV1Base}/pets", $data);
+        $response = $this->apiAs(User::find(1), 'PUT', "{$this->apiV1Base}/pets/{$this->pet->id}", $data);
 
         $response->assertStatus(422);
         $response->assertJsonStructure(
@@ -214,7 +292,7 @@ class CreatePetTest extends TestCase
             'profile_picture' => 1234,
         ];
 
-        $response = $this->apiAs(User::find(1), 'POST', "{$this->apiV1Base}/pets", $data);
+        $response = $this->apiAs(User::find(1), 'PUT', "{$this->apiV1Base}/pets/{$this->pet->id}", $data);
 
         $response->assertStatus(422);
         $response->assertJsonStructure(
@@ -239,7 +317,7 @@ class CreatePetTest extends TestCase
             'profile_picture' => 'photo-pet.png',
         ];
 
-        $response = $this->apiAs(User::find(1), 'POST', "{$this->apiV1Base}/pets", $data);
+        $response = $this->apiAs(User::find(1), 'PUT', "{$this->apiV1Base}/pets/{$this->pet->id}", $data);
 
         $response->assertStatus(422);
         $response->assertJsonStructure(
@@ -256,5 +334,12 @@ class CreatePetTest extends TestCase
     {
         parent::setUp();
         $this->seed(UserSeeder::class);
+        $this->pet = Pet::factory()->create([
+            'user_id' => 1,
+            'name'    => 'Pet',
+            'slug'    => 'Pet',
+            'species' => 'Species',
+            'breed' => 'Breed',
+        ]);
     }
 }

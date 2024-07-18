@@ -11,7 +11,7 @@ class UpdatePetRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return auth()->check();
     }
 
     /**
@@ -22,7 +22,25 @@ class UpdatePetRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name'        => 'required|string|max:255',
+            'slug'        => 'required|unique:pets,slug,' . $this->pet->id,
+            'species' => 'required|string|max:255',
+            'breed' => 'nullable|string|max:255',
+            'age' => 'nullable|integer',
+            'biography' => 'nullable|string',
+            'profile_picture' => 'nullable|string|max:255',
+
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $slug = $this->pet->slug;
+        if ($this->get('name') !== $this->pet->name) {
+            $slug = str($this->get('name') . ' ' . uniqid())->slug();
+        }
+        $this->merge([
+            'slug' => $slug
+        ]);
     }
 }
