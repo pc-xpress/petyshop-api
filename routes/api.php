@@ -27,6 +27,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers'], function
     # endAuth
 
     # Pets
-    Route::apiResource('/pets', PetController::class);
+    Route::middleware('auth:api')
+        ->apiResource('/pets', PetController::class);
     #endPets
 });

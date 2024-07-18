@@ -61,6 +61,15 @@ class CreatePetTest extends TestCase
     }
 
     #[Test]
+    public function a_unauthenticated_user_cannot_create_a_pet(): void
+    {
+        // $this->withoutExceptionHandling();
+        $response = $this->postJson("{$this->apiV1Base}/pets");
+
+        $response->assertStatus(401);
+    }
+
+    #[Test]
     public function name_most_be_required(): void
     {
         $data = [

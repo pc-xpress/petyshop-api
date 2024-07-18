@@ -16,7 +16,10 @@ class PetController extends Controller
      */
     public function index()
     {
-        //
+        $pets = auth()->user()->pets;
+        return ApiResponseHelper::sendResponse(
+            ['pets' => PetResource::collection($pets)], // The user resource to be returned.
+        );
     }
 
     /**
@@ -55,6 +58,14 @@ class PetController extends Controller
      */
     public function destroy(Pet $pet)
     {
-        //
+        Gate::authorize('delete', $pet);
+        $pet->delete();
+        return ApiResponseHelper::sendResponse(
+            ['pet' => PetResource::make($pet)], // The user resource to be returned.
+            true, // The success flag.
+            'OK', // The success message.
+            [], // The additional data.
+            200 // The HTTP status code.
+        );
     }
 }

@@ -45,7 +45,7 @@ class PetPolicy
      */
     public function delete(User $user, Pet $pet): bool
     {
-        //
+        return $user->id === $pet->user_id;
     }
 
     /**

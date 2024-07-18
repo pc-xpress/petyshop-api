@@ -73,7 +73,7 @@ class EditPetTest extends TestCase
 
         $response = $this->putJson("{$this->apiV1Base}/pets/{$this->pet->id}", $data);
 
-        $response->assertStatus(403);
+        $response->assertStatus(401);
     }
 
     #[Test]
