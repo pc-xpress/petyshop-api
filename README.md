@@ -126,4 +126,4 @@ php artisan test
 Contributions are welcome! However, all contributors must be authorized by the administrator before submitting changes. Please fork this repository, make your changes, and submit a pull request. Ensure your code adheres to the project's coding standards and includes appropriate tests.
 
 ## License
-This project is open-sourced software licensed under the [MIT license]().
+This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
