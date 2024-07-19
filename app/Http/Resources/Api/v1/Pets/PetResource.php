@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Api\v1\Pets;
+
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;

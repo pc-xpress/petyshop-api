@@ -19,7 +19,8 @@ class PetListTest extends TestCase
     {
         // $this->withoutExceptionHandling();
         $response = $this->apiAs(User::find(1), 'GET', "{$this->apiV1Base}/pets");
-        $response->assertJsonCount(10, 'data.pets');
+        // $response->dd();
+        $response->assertJsonCount(15, 'data.pets');
         $response->assertStatus(200);
     }
 
@@ -44,7 +45,7 @@ class PetListTest extends TestCase
     {
         parent::setUp();
         $this->seed(UserSeeder::class);
-        $this->pets = Pet::factory()->count(10)->create([
+        $this->pets = Pet::factory()->count(15)->create([
             'user_id' => 1,
         ]);
     }

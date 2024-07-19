@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Pet;
 use App\Classes\ApiResponseHelper;
-use App\Http\Resources\PetResource;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\StorePetRequest;
 use App\Http\Requests\UpdatePetRequest;
+use App\Http\Resources\Api\v1\Pets\PetResource;
+use App\Http\Resources\Api\v1\Pets\PetCollection;
 
 class PetController extends Controller
 {
@@ -16,9 +17,13 @@ class PetController extends Controller
      */
     public function index()
     {
-        $pets = auth()->user()->pets;
+        $pets = auth()->user()->pets()->paginate();
         return ApiResponseHelper::sendResponse(
-            ['pets' => PetResource::collection($pets)], // The user resource to be returned.
+            new PetCollection($pets),
+            true, // The success flag.
+            'OK', // The success message.
+            [], // The additional data.
+            200 // The HTTP status code.
         );
     }
 
@@ -38,7 +43,14 @@ class PetController extends Controller
      */
     public function show(Pet $pet)
     {
-        //
+        Gate::authorize('view', $pet);
+        return ApiResponseHelper::sendResponse(
+            ['pet' => PetResource::make($pet)], // The user resource to be returned.
+            true, // The success flag.
+            'OK', // The success message.
+            [], // The additional data.
+            200 // The HTTP status code.
+        );
     }
 
     /**

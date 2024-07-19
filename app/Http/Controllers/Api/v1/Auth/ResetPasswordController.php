@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Classes\ApiResponseHelper;
 use App\Http\Controllers\Controller;
 use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 
