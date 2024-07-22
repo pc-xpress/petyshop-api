@@ -14,6 +14,8 @@ class PetListTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected $pets;
+
     #[Test]
     public function a_unauthenticated_user_must_see_their_pets(): void
     {

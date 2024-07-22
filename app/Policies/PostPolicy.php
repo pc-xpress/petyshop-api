@@ -3,10 +3,11 @@
 namespace App\Policies;
 
 use App\Models\Pet;
+use App\Models\Post;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class PetPolicy
+class PostPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -16,17 +17,17 @@ class PetPolicy
         //
     }
 
-    public function viewPosts(User $user, Pet $pet): bool
+    public function viewPostsByPet(User $user, Post $post, Pet $pet): bool
     {
-        return $user->id === $pet->user_id;
+        return $user->id === $pet->user_id && $post->pet_id === $pet->id;
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Pet $pet): bool
+    public function view(User $user, Post $post): bool
     {
-        return $user->id === $pet->user_id;
+        //
     }
 
     /**
@@ -40,23 +41,23 @@ class PetPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Pet $pet): bool
+    public function update(User $user, Post $post): bool
     {
-        return $user->id === $pet->user_id;
+        //
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Pet $pet): bool
+    public function delete(User $user, Post $post): bool
     {
-        return $user->id === $pet->user_id;
+        //
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Pet $pet): bool
+    public function restore(User $user, Post $post): bool
     {
         //
     }
@@ -64,7 +65,7 @@ class PetPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Pet $pet): bool
+    public function forceDelete(User $user, Post $post): bool
     {
         //
     }

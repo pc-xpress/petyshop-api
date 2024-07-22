@@ -9,7 +9,21 @@ class Pet extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected $fillable = [
+        'user_id',
+        'name',
+        'slug',
+        'species',
+        'breed',
+        'age',
+        'biography',
+        'profile_picture',
+    ];
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
 
     public function user()
     {
