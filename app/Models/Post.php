@@ -8,4 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Post extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'pet_id',
+        'content',
+        'image',
+    ];
+
+    public function pet()
+    {
+        return $this->belongsTo(Pet::class);
+    }
 }

@@ -2,7 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\Api\v1\Post\Post;
+use App\Models\Pet;
+use App\Models\Post;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
@@ -14,6 +15,11 @@ class PostPolicy
     public function viewAny(User $user): bool
     {
         //
+    }
+
+    public function viewPostsByPet(User $user, Post $post, Pet $pet): bool
+    {
+        return $user->id === $pet->user_id && $post->pet_id === $pet->id;
     }
 
     /**

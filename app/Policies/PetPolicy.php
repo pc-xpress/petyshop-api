@@ -16,6 +16,11 @@ class PetPolicy
         //
     }
 
+    public function viewPosts(User $user, Pet $pet): bool
+    {
+        return $user->id === $pet->user_id;
+    }
+
     /**
      * Determine whether the user can view the model.
      */

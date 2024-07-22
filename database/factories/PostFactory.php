@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Pet;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,9 @@ class PostFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'pet_id' => fn () => Pet::factory()->create(),
+            'content' => fake()->sentence(),
+            'image' => fake()->imageUrl(),
         ];
     }
 }

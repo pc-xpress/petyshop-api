@@ -11,7 +11,7 @@ class StorePostRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return auth()->check();
     }
 
     /**
@@ -22,7 +22,9 @@ class StorePostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'pet_id' => 'required|exists:pets,id',
+            'content' => 'required|string',
+            'image' => 'nullable|string',
         ];
     }
 }

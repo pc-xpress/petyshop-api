@@ -3,13 +3,14 @@
 use Illuminate\Http\Request;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PetController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\Api\v1\Auth\AuthController;
 use App\Http\Controllers\Api\v1\Auth\LoginController;
 use App\Http\Controllers\Api\v1\Auth\ProfileController;
 use App\Http\Controllers\Api\v1\Auth\RegisterController;
 use App\Http\Controllers\Api\v1\Auth\ResetPasswordController;
 use App\Http\Controllers\Api\v1\Auth\UpdatePasswordController;
-use App\Http\Controllers\PetController;
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
@@ -29,5 +30,10 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers'], function
     # Pets
     Route::middleware('auth:api')
         ->apiResource('/pets', PetController::class);
+    #endPets
+    # Pets
+    Route::middleware('auth:api')
+        ->as('pets')
+        ->apiResource('{pet:id}/posts', PostController::class);
     #endPets
 });
