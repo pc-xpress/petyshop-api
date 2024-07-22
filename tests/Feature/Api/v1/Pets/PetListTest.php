@@ -48,7 +48,7 @@ class PetListTest extends TestCase
         parent::setUp();
         $this->seed(UserSeeder::class);
         $this->pets = Pet::factory()->count(15)->create([
-            'pet_id' => 1,
+            'user_id' => 1,
         ]);
     }
 }

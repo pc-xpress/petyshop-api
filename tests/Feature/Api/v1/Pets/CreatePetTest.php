@@ -17,7 +17,7 @@ class CreatePetTest extends TestCase
     #[Test]
     public function a_user_can_create_a_pet(): void
     {
-        // $this->withoutExceptionHandling();
+        $this->withoutExceptionHandling();
         $data = [
             'name' => 'New Pet',
             'species' => 'New species',
@@ -28,6 +28,7 @@ class CreatePetTest extends TestCase
         ];
 
         $response = $this->apiAs(User::find(1), 'POST', "{$this->apiV1Base}/pets", $data);
+        // $response->dd();
 
         $response->assertStatus(200);
         $this->assertDatabaseCount('pets', 1);
@@ -149,7 +150,6 @@ class CreatePetTest extends TestCase
         ];
 
         $response = $this->apiAs(User::find(1), 'POST', "{$this->apiV1Base}/pets", $data);
-
         $response->assertStatus(422);
         $response->assertJsonStructure(
             [
