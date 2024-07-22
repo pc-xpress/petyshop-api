@@ -32,9 +32,12 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePostRequest $request)
+    public function store(StorePostRequest $request, Pet $pet)
     {
-        //
+        $post = $pet->posts()->create($request->validated());
+        return ApiResponseHelper::sendResponse(
+            ['post' => PostResource::make($post)], // The user resource to be returned.
+        );
     }
 
     /**
