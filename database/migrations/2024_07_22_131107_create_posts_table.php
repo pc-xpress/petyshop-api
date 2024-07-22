@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('pet_id')->constrained()->onDelete('cascade');
+            $table->foreignIdFor(\App\Models\Pet::class, 'pet_id')->constrained()->onDelete('cascade');
             $table->text('content');
             $table->string('image')->nullable();
             $table->enum('visibility', ['public', 'private'])->default('public');
