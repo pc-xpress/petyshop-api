@@ -29,6 +29,18 @@ class PostController extends Controller
         );
     }
 
+    public function publicPosts()
+    {
+        $posts = Post::where('visibility', 'public')->paginate();
+        return ApiResponseHelper::sendResponse(
+            new PostCollection($posts),
+            true, // The success flag.
+            'OK', // The success message.
+            [], // The additional data.
+            200 // The HTTP status code.
+        );
+    }
+
     /**
      * Store a newly created resource in storage.
      */
