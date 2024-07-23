@@ -76,8 +76,16 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Post $post)
+    public function destroy(Pet $pet, Post $post)
     {
-        //
+        Gate::authorize('viewPosts', $pet);
+        $post->delete();
+        return ApiResponseHelper::sendResponse(
+            [], // The user resource to be returned.
+            true, // The success flag.
+            'OK', // The success message.
+            [], // The additional data.
+            200 // The HTTP status code.
+        );
     }
 }

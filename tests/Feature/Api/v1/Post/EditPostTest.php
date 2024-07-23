@@ -23,13 +23,13 @@ class EditPostTest extends TestCase
     #[Test]
     public function an_authenticated_user_can_edit_a_post(): void
     {
-        // $this->withoutExceptionHandling();
         $data = [
             'content' => 'New test content',
             'image' => 'New test image',
         ];
+
         $response = $this->apiAs(User::find(1), 'PUT', "{$this->apiV1Base}/pets/{$this->pet->id}/posts/{$this->post->id}", $data);
-        // $response->dd();
+
         $response->assertStatus(200);
         $response->assertJsonStructure(
             [
@@ -44,7 +44,6 @@ class EditPostTest extends TestCase
                 'errors',
             ]
         );
-
         $response->assertJsonFragment([
             'data' => [
                 'post' => [
@@ -56,7 +55,6 @@ class EditPostTest extends TestCase
 
             ]
         ]);
-
         $this->assertDatabaseMissing('posts', [
             'content' => 'test content',
             'image' => 'test image',
@@ -70,7 +68,9 @@ class EditPostTest extends TestCase
             'content' => 'New test content',
             'image' => 'New test image',
         ];
+
         $response = $this->putJson("{$this->apiV1Base}/pets/{$this->pet->id}/posts/{$this->post->id}", $data);
+
         $response->assertStatus(401);
     }
 
@@ -82,20 +82,24 @@ class EditPostTest extends TestCase
             'image' => 'New test image',
         ];
         $user = User::factory()->create();
+
         $response = $this->apiAs($user, 'PUT', "{$this->apiV1Base}/pets/{$this->pet->id}/posts/{$this->post->id}", $data);
+
         $response->assertStatus(403);
     }
 
 
 
-    // #[test]
+    #[test]
     public function post_content_is_required(): void
     {
         $data = [
             'content' => '',
             'image' => 'New test image',
         ];
+
         $response = $this->apiAs(User::find(1), 'PUT', "{$this->apiV1Base}/pets/{$this->pet->id}/posts/{$this->post->id}", $data);
+
         $response->assertStatus(422);
         $response->assertJsonStructure(['message', 'errors' => ['content']]);
     }

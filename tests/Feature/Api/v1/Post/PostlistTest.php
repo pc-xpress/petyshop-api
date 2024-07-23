@@ -21,9 +21,8 @@ class PostlistTest extends TestCase
     #[Test]
     public function a_unauthenticated_user_must_see_their_posts(): void
     {
-        // $this->withoutExceptionHandling();
         $response = $this->apiAs(User::find(1), 'GET', "{$this->apiV1Base}/pets/{$this->pet->id}/posts");
-        // $response->dd();
+
         $response->assertStatus(200);
         $response->assertJsonCount(15, 'data.posts');
         $response->assertJsonStructure([
@@ -39,17 +38,15 @@ class PostlistTest extends TestCase
                 ],
             ],
         ]);
-
         $response->assertJsonPath('data.posts.0.pet_id', $this->pet->id);
     }
 
     #[Test]
     public function a_user_can_see_their_posts_with_pagination(): void
     {
-        $this->withoutExceptionHandling();
         $response = $this->apiAs(User::find(1), 'GET', "{$this->apiV1Base}/pets/{$this->pet->id}/posts");
-        $response->assertStatus(200);
 
+        $response->assertStatus(200);
         $response->assertJsonCount(15, 'data.posts');
         $response->assertJsonStructure(['status', 'success', 'errors', 'message', 'data' => [
             'posts',

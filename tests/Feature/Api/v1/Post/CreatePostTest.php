@@ -25,6 +25,7 @@ class CreatePostTest extends TestCase
             'content' => 'test content',
             'image' => 'test image',
         ];
+
         $response = $this->apiAs(User::find(1), 'POST', "{$this->apiV1Base}/pets/{$this->pet->id}/posts", $data);
 
         $response->assertStatus(200);
@@ -55,7 +56,6 @@ class CreatePostTest extends TestCase
 
             ]
         ]);
-
         $this->assertDatabaseHas('posts', [
             'id' => 1,
             'pet_id' => $this->pet->id,
@@ -71,7 +71,9 @@ class CreatePostTest extends TestCase
             'content' => 'test content',
             'image' => 'test image',
         ];
+
         $response = $this->postJson("{$this->apiV1Base}/pets/{$this->pet->id}/posts", $data);
+
         $response->assertStatus(401);
     }
 
@@ -83,7 +85,9 @@ class CreatePostTest extends TestCase
             'image' => 'test image',
         ];
         $user = User::factory()->create();
+
         $response = $this->apiAs($user, 'POST', "{$this->apiV1Base}/pets/{$this->pet->id}/posts", $data);
+
         $response->assertStatus(403);
     }
 
@@ -94,8 +98,9 @@ class CreatePostTest extends TestCase
             'content' => 'test content',
             'image' => 'test image',
         ];
+
         $response = $this->apiAs(User::find(1), 'POST', "{$this->apiV1Base}/pets/{$this->pet->id}/posts", $data);
-        // $response->dd();
+
         $response->assertStatus(200);
         $response->assertJsonStructure(
             [
@@ -119,7 +124,9 @@ class CreatePostTest extends TestCase
             'content' => '',
             'image' => 'test image',
         ];
+
         $response = $this->apiAs(User::find(1), 'POST', "{$this->apiV1Base}/pets/{$this->pet->id}/posts", $data);
+
         $response->assertStatus(422);
         $response->assertJsonStructure(['message', 'errors' => ['content']]);
     }
