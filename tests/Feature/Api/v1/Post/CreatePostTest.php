@@ -76,6 +76,18 @@ class CreatePostTest extends TestCase
     }
 
     #[Test]
+    public function a_authenticated_user_can_only_update_their_post(): void
+    {
+        $data = [
+            'content' => 'test content',
+            'image' => 'test image',
+        ];
+        $user = User::factory()->create();
+        $response = $this->apiAs($user, 'POST', "{$this->apiV1Base}/pets/{$this->pet->id}/posts", $data);
+        $response->assertStatus(403);
+    }
+
+    #[Test]
     public function a_user_authenticated_can_create_a_post(): void
     {
         $data = [
@@ -104,6 +116,7 @@ class CreatePostTest extends TestCase
     public function post_content_is_required(): void
     {
         $data = [
+            'content' => '',
             'image' => 'test image',
         ];
         $response = $this->apiAs(User::find(1), 'POST', "{$this->apiV1Base}/pets/{$this->pet->id}/posts", $data);

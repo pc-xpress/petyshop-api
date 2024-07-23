@@ -53,9 +53,17 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePostRequest $request, Post $post)
+    public function update(UpdatePostRequest $request, Pet $pet, Post $post)
     {
-        //
+        Gate::authorize('viewPosts', $pet);;
+        $post->update($request->validated());
+        return ApiResponseHelper::sendResponse(
+            ['post' => PostResource::make($post->fresh())], // The user resource to be returned.
+            true, // The success flag.
+            'OK', // The success message.
+            [], // The additional data.
+            200 // The HTTP status code.
+        );
     }
 
     /**
