@@ -34,6 +34,6 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers'], function
     # Pets
     Route::middleware('auth:api')
         ->as('pets')
-        ->apiResource('{pet:id}/posts', PostController::class);
+        ->apiResource('pets/{pet:id}/posts', PostController::class);
     #endPets
 });

@@ -19,15 +19,15 @@ class PetFactory extends Factory
     {
         $title = $this->faker->words(3, true);
         return [
-            'user_id'     => fn () => User::factory()->create(),
-            'name'        => $title,
-            'slug'        => str($title)->slug(),
-            'name' => fake()->word(3, true),
-            'species' => fake()->word(2, true),
-            'breed' => fake()->word(2, true),
-            'age' => fake()->numberBetween(1, 10),
-            'biography' => fake()->word(5, true),
-            'profile_picture' => 'photo-pet.png',
+            'user_id'           => fn () => User::factory()->create(),
+            'name'              => $title,
+            'slug'              => str($title)->slug(),
+            'name'              => fake()->word(3, true),
+            'species'           => fake()->word(2, true),
+            'breed'             => fake()->word(2, true),
+            'age'               => fake()->numberBetween(1, 10),
+            'biography'         => fake()->word(5, true),
+            'profile_picture'   => 'photo-pet.png',
         ];
     }
 }

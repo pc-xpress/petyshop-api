@@ -32,9 +32,14 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePostRequest $request)
+    public function store(StorePostRequest $request, Pet $pet, Post $post)
     {
-        //
+
+        Gate::authorize('viewPosts', $pet);
+        $post = $pet->posts()->create($request->validated());
+        return ApiResponseHelper::sendResponse(
+            ['post' => PostResource::make($post)], // The user resource to be returned.
+        );
     }
 
     /**
@@ -42,22 +47,45 @@ class PostController extends Controller
      */
     public function show(Pet $pet, Post $post)
     {
-        //
+        Gate::authorize('viewPosts', $pet);
+        return ApiResponseHelper::sendResponse(
+            ['post' => PostResource::make($post)], // The user resource to be returned.
+            true, // The success flag.
+            'OK', // The success message.
+            [], // The additional data.
+            200 // The HTTP status code.
+        );
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePostRequest $request, Post $post)
+    public function update(UpdatePostRequest $request, Pet $pet, Post $post)
     {
-        //
+        Gate::authorize('viewPosts', $pet);;
+        $post->update($request->validated());
+        return ApiResponseHelper::sendResponse(
+            ['post' => PostResource::make($post->fresh())], // The user resource to be returned.
+            true, // The success flag.
+            'OK', // The success message.
+            [], // The additional data.
+            200 // The HTTP status code.
+        );
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Post $post)
+    public function destroy(Pet $pet, Post $post)
     {
-        //
+        Gate::authorize('viewPosts', $pet);
+        $post->delete();
+        return ApiResponseHelper::sendResponse(
+            [], // The user resource to be returned.
+            true, // The success flag.
+            'OK', // The success message.
+            [], // The additional data.
+            200 // The HTTP status code.
+        );
     }
 }
