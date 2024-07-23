@@ -35,6 +35,10 @@ class PetController extends Controller
         $pet = auth()->user()->pets()->create($request->validated());
         return ApiResponseHelper::sendResponse(
             ['pet' => PetResource::make($pet)], // The user resource to be returned.
+            true, // The success flag.
+            'OK', // The success message.
+            [], // The additional data.
+            200 // The HTTP status code.
         );
     }
 

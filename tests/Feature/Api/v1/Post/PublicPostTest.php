@@ -11,17 +11,16 @@ use PHPUnit\Framework\Attributes\Test;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class PostlistTest extends TestCase
+class PublicPostTest extends TestCase
 {
     use RefreshDatabase;
 
     protected $pet;
     protected $posts;
-
     #[Test]
-    public function an_authenticated_user_must_see_their_posts(): void
+    public function an_authenticated_user_must_see_public_posts(): void
     {
-        $response = $this->apiAs(User::find(1), 'GET', "{$this->apiV1Base}/pets/{$this->pet->id}/posts");
+        $response = $this->apiAs(User::find(1), 'GET', "{$this->apiV1Base}/posts-public");
 
         $response->assertStatus(200);
         $response->assertJsonCount(15, 'data.posts');
@@ -41,10 +40,11 @@ class PostlistTest extends TestCase
         $response->assertJsonPath('data.posts.0.pet_id', $this->pet->id);
     }
 
+
     #[Test]
-    public function a_user_can_see_their_posts_with_pagination(): void
+    public function a_user_can_see_public_posts_with_pagination(): void
     {
-        $response = $this->apiAs(User::find(1), 'GET', "{$this->apiV1Base}/pets/{$this->pet->id}/posts");
+        $response = $this->apiAs(User::find(1), 'GET', "{$this->apiV1Base}/posts-public");
 
         $response->assertStatus(200);
         $response->assertJsonCount(15, 'data.posts');
@@ -62,6 +62,14 @@ class PostlistTest extends TestCase
         $response->assertJsonPath('data.per_page', 15);
         $response->assertJsonPath('data.total_pages', 1);
         $response->assertJsonPath('data.count', 15);
+    }
+
+    #[Test]
+    public function a_unauthenticated_user_cannot_see_public_posts(): void
+    {
+        $response = $this->getJson("{$this->apiV1Base}/posts-public");
+
+        $response->assertStatus(401);
     }
 
     protected function setUp(): void

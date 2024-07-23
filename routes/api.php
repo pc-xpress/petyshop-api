@@ -31,9 +31,13 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers'], function
     Route::middleware('auth:api')
         ->apiResource('/pets', PetController::class);
     #endPets
-    # Pets
+
+    # Posts
+    Route::middleware('auth:api')
+        ->get('/posts-public', [PostController::class, 'publicPosts']);
+
     Route::middleware('auth:api')
         ->as('pets')
         ->apiResource('pets/{pet:id}/posts', PostController::class);
-    #endPets
+    #endPosts
 });
