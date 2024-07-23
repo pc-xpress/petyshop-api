@@ -26,7 +26,6 @@ class CreatePostTest extends TestCase
             'image' => 'test image',
         ];
         $response = $this->apiAs(User::find(1), 'POST', "{$this->apiV1Base}/pets/{$this->pet->id}/posts", $data);
-        // $response->dd();
 
         $response->assertStatus(200);
         $response->assertJsonStructure(
@@ -63,6 +62,53 @@ class CreatePostTest extends TestCase
             'content' => $data['content'],
             'image' => $data['image'],
         ]);
+    }
+
+    #[Test]
+    public function a_unauthenticated_user_cannot_create_a_post(): void
+    {
+        $data = [
+            'content' => 'test content',
+            'image' => 'test image',
+        ];
+        $response = $this->postJson("{$this->apiV1Base}/pets/{$this->pet->id}/posts", $data);
+        $response->assertStatus(401);
+    }
+
+    #[Test]
+    public function a_user_authenticated_can_create_a_post(): void
+    {
+        $data = [
+            'content' => 'test content',
+            'image' => 'test image',
+        ];
+        $response = $this->apiAs(User::find(1), 'POST', "{$this->apiV1Base}/pets/{$this->pet->id}/posts", $data);
+        // $response->dd();
+        $response->assertStatus(200);
+        $response->assertJsonStructure(
+            [
+                'data' => [
+                    'post' => [
+                        'id', 'pet_id', 'pet_name', 'content', 'image'
+                    ]
+                ],
+                'message',
+                'success',
+                'status',
+                'errors',
+            ]
+        );
+    }
+
+    #[test]
+    public function post_content_is_required(): void
+    {
+        $data = [
+            'image' => 'test image',
+        ];
+        $response = $this->apiAs(User::find(1), 'POST', "{$this->apiV1Base}/pets/{$this->pet->id}/posts", $data);
+        $response->assertStatus(422);
+        $response->assertJsonStructure(['message', 'errors' => ['content']]);
     }
 
     protected function setUp(): void

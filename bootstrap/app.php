@@ -1,11 +1,12 @@
 <?php
 
 use App\Classes\ApiResponseHelper;
-use App\Http\Middleware\ForseJsonResponseMiddleware;
 use Illuminate\Foundation\Application;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use App\Http\Middleware\ForseJsonResponseMiddleware;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -27,6 +28,16 @@ return Application::configure(basePath: dirname(__DIR__))
                 'Validation errors.',
                 $throwable->errors(),
                 422,
+            );
+        });
+
+        $exceptions->render(function (AuthenticationException $throwable) {
+            return ApiResponseHelper::sendResponse(
+                [],
+                false,
+                'Unauthenticated.',
+                [$throwable->getMessage()],
+                401,
             );
         });
     })->create();
