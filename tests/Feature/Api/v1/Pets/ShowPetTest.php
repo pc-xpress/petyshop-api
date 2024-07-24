@@ -14,12 +14,13 @@ class ShowPetTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected $pet;
+
     #[Test]
     public function a_unauthenticated_user_must_see_of_one_their_pets(): void
     {
-        // $this->withoutExceptionHandling();
         $response = $this->apiAs(User::find(1), 'GET', "{$this->apiV1Base}/pets/{$this->pet->id}");
-        // $response->dd();
+
         $response->assertStatus(200);
         $response->assertJsonStructure(['status', 'success', 'errors', 'message', 'data' => [
             'pet' =>
@@ -36,13 +37,13 @@ class ShowPetTest extends TestCase
         ]]);
 
         $response->assertJsonFragment([
-            'id' => $this->pet->id,
-            'name' => $this->pet->name,
-            'species' => $this->pet->species,
-            'breed' => $this->pet->breed,
-            'age' => $this->pet->age,
-            'biography' => $this->pet->biography,
-            'profile_picture' => $this->pet->profile_picture,
+            'id'                => $this->pet->id,
+            'name'              => $this->pet->name,
+            'species'           => $this->pet->species,
+            'breed'             => $this->pet->breed,
+            'age'               => $this->pet->age,
+            'biography'         => $this->pet->biography,
+            'profile_picture'   => $this->pet->profile_picture,
         ]);
     }
 

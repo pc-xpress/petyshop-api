@@ -14,6 +14,8 @@ class PaginatePetTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected $pets;
+
     #[Test]
     public function a_user_can_see_their_pets_with_pagination(): void
     {

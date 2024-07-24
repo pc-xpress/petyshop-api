@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Pet;
+use App\Models\Post;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,9 +19,25 @@ class PostFactory extends Factory
     public function definition(): array
     {
         return [
-            'pet_id' => fn () => Pet::factory()->create(),
-            'content' => fake()->sentence(),
-            'image' => fake()->imageUrl(),
+            'pet_id'            => fn () => Pet::factory()->create()->id,
+            'description'       => fake()->sentence,
+            'location'          => fake()->city,
+            'hide_like_view'    => fake()->boolean,
+            'allow_commenting'  => fake()->boolean,
+            'type'              => fake()->randomElement(['post', 'reel']),
+            'visibility'        => fake()->randomElement(['public', 'private']),
+            'image'             => fake()->imageUrl,
         ];
+    }
+
+    function configure()
+    {
+        return $this->afterCreating(function (Post $post) {
+            if ($post->type == 'reel') {
+                // Media::factory()->reel()->create(['mediable_type' => get_class($post), 'mediable_id' => $post->id]);
+            } else {
+                // Media::factory()->post()->create(['mediable_type' => get_class($post), 'mediable_id' => $post->id]);
+            }
+        });
     }
 }

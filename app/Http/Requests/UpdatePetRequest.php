@@ -22,13 +22,13 @@ class UpdatePetRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'        => 'required|string|max:255',
-            'slug'        => 'required|unique:pets,slug,' . $this->pet->id,
-            'species' => 'required|string|max:255',
-            'breed' => 'nullable|string|max:255',
-            'age' => 'nullable|integer',
-            'biography' => 'nullable|string',
-            'profile_picture' => 'nullable|string|max:255',
+            'name'              => 'required|string|max:255',
+            'slug'              => 'required|unique:pets,slug,' . $this->pet->id,
+            'species'           => 'required|string|max:255',
+            'breed'             => 'nullable|string|max:255',
+            'age'               => 'nullable|integer',
+            'biography'         => 'nullable|string',
+            'profile_picture'   => 'nullable|string|max:255',
 
         ];
     }

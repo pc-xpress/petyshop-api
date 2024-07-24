@@ -31,9 +31,14 @@ class PostlistTest extends TestCase
                     '*' => [
                         'id',
                         'pet_id',
-                        'pet_name',
-                        'content',
+                        'description',
+                        'location',
+                        'hide_like_view',
+                        'allow_commenting',
+                        'type',
+                        'visibility',
                         'image',
+
                     ],
                 ],
             ],

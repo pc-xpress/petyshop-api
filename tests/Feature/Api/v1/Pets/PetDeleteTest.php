@@ -14,6 +14,8 @@ class PetDeleteTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected $pet;
+
     #[Test]
     public function a_unauthenticated_user_must_delete_their_pets(): void
     {

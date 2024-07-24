@@ -22,13 +22,13 @@ class StorePetRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'        => 'required|string|max:255',
-            'slug'        => 'required|unique:pets,slug',
-            'species' => 'required|string|max:255',
-            'breed' => 'nullable|string|max:255',
-            'age' => 'nullable|integer',
-            'biography' => 'nullable|string',
-            'profile_picture' => 'nullable|string|max:255',
+            'name'              => 'required|string|max:255',
+            'slug'              => 'required|unique:pets,slug',
+            'species'           => 'required|string|max:255',
+            'breed'             => 'nullable|string|max:255',
+            'age'               => 'nullable|integer',
+            'biography'         => 'nullable|string',
+            'profile_picture'   => 'nullable|string|max:255',
 
         ];
     }

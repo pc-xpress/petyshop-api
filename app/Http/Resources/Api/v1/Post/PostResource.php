@@ -15,11 +15,16 @@ class PostResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
-            'pet_id' => $this->pet_id,
-            'pet_name' => $this->pet->name, // Asumiendo que la relación con la mascota está definida
-            'content' => $this->content,
-            'image' => $this->image,
+            'id'                => $this->id,
+            'pet_id'            => $this->pet_id,
+            'pet_name'          => $this->pet->name,
+            'description'       => $this->description,
+            'location'          => $this->location,
+            'hide_like_view'    => $this->hide_like_view,
+            'allow_commenting'  => $this->allow_commenting,
+            'type'              => $this->type,
+            'visibility'        => $this->visibility,
+            'image'             => $this->image,
         ];
     }
 }
