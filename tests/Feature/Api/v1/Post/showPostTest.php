@@ -30,19 +30,30 @@ class ShowPostTest extends TestCase
                     'id',
                     'pet_id',
                     'pet_name',
-                    'content',
+                    'description',
+                    'location',
+                    'hide_like_view',
+                    'allow_commenting',
+                    'type',
+                    'visibility',
                     'image',
+
                 ],
             ],
         ]);
         $response->assertJsonFragment([
             'data' => [
                 'post' => [
-                    'id' => $this->post->id,
-                    'pet_id' => $this->post->pet_id,
-                    'pet_name' => $this->pet->name,
-                    'content' => $this->post->content,
-                    'image' => $this->post->image,
+                    'id'                => $this->post->id,
+                    'pet_id'            => $this->post->pet_id,
+                    'pet_name'          => $this->post->pet->name,
+                    'description'       => $this->post->description,
+                    'location'          => $this->post->location,
+                    'hide_like_view'    => $this->post->hide_like_view,
+                    'allow_commenting'  => $this->post->allow_commenting,
+                    'type'              => $this->post->type,
+                    'visibility'        => $this->post->visibility,
+                    'image'             => $this->post->image,
                 ],
             ],
         ]);

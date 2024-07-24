@@ -22,9 +22,14 @@ class StorePostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'pet_id' => 'exists:pets,id',
-            'content' => 'required|string',
-            'image' => 'nullable|string',
+            'pet_id'            => 'exists:pets,id',
+            'description'       => 'nullable|string',
+            'location'          => 'nullable|string',
+            'hide_like_view'    => 'boolean',
+            'allow_commenting'  => 'boolean',
+            'type'              => 'required|in:post,reel',
+            'visibility'        => 'required|in:public,private',
+            'image'             => 'nullable|string',
         ];
     }
 }

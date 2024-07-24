@@ -30,8 +30,12 @@ class PublicPostTest extends TestCase
                     '*' => [
                         'id',
                         'pet_id',
-                        'pet_name',
-                        'content',
+                        'description',
+                        'location',
+                        'hide_like_view',
+                        'allow_commenting',
+                        'type',
+                        'visibility',
                         'image',
                     ],
                 ],
@@ -81,6 +85,7 @@ class PublicPostTest extends TestCase
         ]);
         $this->posts = Post::factory()->count(15)->create([
             'pet_id' => $this->pet,
+            'visibility' => 'public',
         ]);
     }
 }

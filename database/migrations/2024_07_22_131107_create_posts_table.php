@@ -14,9 +14,13 @@ return new class extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(\App\Models\Pet::class, 'pet_id')->constrained()->onDelete('cascade');
-            $table->text('content');
+            $table->text('description')->nullable();
+            $table->string('location')->nullable();
+            $table->boolean('hide_like_view')->default(false);
+            $table->boolean('allow_commenting')->default(false);
+            $table->enum('type', ['post', 'reel']);
+            $table->enum('visibility', ['public', 'private']);
             $table->string('image')->nullable();
-            $table->enum('visibility', ['public', 'private'])->default('public');
             $table->timestamps();
         });
     }
