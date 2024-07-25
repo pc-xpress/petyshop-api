@@ -25,11 +25,11 @@ class RegisterController extends Controller
 
         // Return a successful response with the created user resource.
         return ApiResponseHelper::sendResponse(
-            ['user' => AuthResource::make($user)], // The user resource to be returned.
-            true, // The success flag.
-            'OK', // The success message.
-            [], // The additional data.
-            200 // The HTTP status code.
+            ['user' => AuthResource::make($user)],
+            true,
+            'OK',
+            [],
+            200
         );
     }
 }
