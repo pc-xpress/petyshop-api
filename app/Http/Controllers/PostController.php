@@ -13,19 +13,16 @@ use Illuminate\Support\Facades\Gate;
 
 class PostController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Pet $pet)
     {
         Gate::authorize('viewPosts', $pet);
         $posts = $pet->posts()->paginate();
         return ApiResponseHelper::sendResponse(
             new PostCollection($posts),
-            true, // The success flag.
-            'OK', // The success message.
-            [], // The additional data.
-            200 // The HTTP status code.
+            true,
+            'OK',
+            [],
+            200
         );
     }
 
@@ -34,16 +31,13 @@ class PostController extends Controller
         $posts = Post::where('visibility', 'public')->paginate();
         return ApiResponseHelper::sendResponse(
             new PostCollection($posts),
-            true, // The success flag.
-            'OK', // The success message.
-            [], // The additional data.
-            200 // The HTTP status code.
+            true,
+            'OK',
+            [],
+            200
         );
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StorePostRequest $request, Pet $pet, Post $post)
     {
 
@@ -54,50 +48,41 @@ class PostController extends Controller
         );
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Pet $pet, Post $post)
     {
         Gate::authorize('viewPosts', $pet);
         return ApiResponseHelper::sendResponse(
             ['post' => PostResource::make($post)], // The user resource to be returned.
-            true, // The success flag.
-            'OK', // The success message.
-            [], // The additional data.
-            200 // The HTTP status code.
+            true,
+            'OK',
+            [],
+            200
         );
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdatePostRequest $request, Pet $pet, Post $post)
     {
         Gate::authorize('viewPosts', $pet);;
         $post->update($request->validated());
         return ApiResponseHelper::sendResponse(
             ['post' => PostResource::make($post->fresh())], // The user resource to be returned.
-            true, // The success flag.
-            'OK', // The success message.
-            [], // The additional data.
-            200 // The HTTP status code.
+            true,
+            'OK',
+            [],
+            200
         );
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Pet $pet, Post $post)
     {
         Gate::authorize('viewPosts', $pet);
         $post->delete();
         return ApiResponseHelper::sendResponse(
-            [], // The user resource to be returned.
-            true, // The success flag.
-            'OK', // The success message.
-            [], // The additional data.
-            200 // The HTTP status code.
+            [],
+            true,
+            'OK',
+            [],
+            200
         );
     }
 }
