@@ -18,6 +18,6 @@ class DatabaseSeeder extends Seeder
 
         $this->call(UserSeeder::class);
         Post::factory()->count(20)->create(['type' => 'reel']);
-        Post::factory(rand(10, 40))->create(['type' => 'reel']);
+        Post::factory(rand(10, 40))->create(['type' => 'post']);
     }
 }

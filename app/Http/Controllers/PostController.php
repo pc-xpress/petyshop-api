@@ -44,7 +44,7 @@ class PostController extends Controller
         Gate::authorize('viewPosts', $pet);
         $post = $pet->posts()->create($request->validated());
         return ApiResponseHelper::sendResponse(
-            ['post' => PostResource::make($post)], // The user resource to be returned.
+            ['post' => PostResource::make($post)],
         );
     }
 
@@ -52,7 +52,7 @@ class PostController extends Controller
     {
         Gate::authorize('viewPosts', $pet);
         return ApiResponseHelper::sendResponse(
-            ['post' => PostResource::make($post)], // The user resource to be returned.
+            ['post' => PostResource::make($post)],
             true,
             'OK',
             [],
@@ -65,7 +65,7 @@ class PostController extends Controller
         Gate::authorize('viewPosts', $pet);;
         $post->update($request->validated());
         return ApiResponseHelper::sendResponse(
-            ['post' => PostResource::make($post->fresh())], // The user resource to be returned.
+            ['post' => PostResource::make($post->fresh())],
             true,
             'OK',
             [],
